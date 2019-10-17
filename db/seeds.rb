@@ -16,7 +16,7 @@ require 'faker'
         username: Faker::Name.first_name,
         zipcode: 78701
     )
-    this_user.images.attach(io: File.open('/Users/andrewrosario/Development/code/mod4/petsmatch/petsmatch-backend/app/user.png'), filename: 'user.png')
+    this_user.images.attach(io: File.open(File.join(File.dirname(__FILE__), 'user.png')), filename: 'user.png')
     rand(1...3).times do |j|
         this_pet = Pet.create(
             user_id: i + 1,
@@ -26,7 +26,7 @@ require 'faker'
             breed: Faker::Creature::Cat.breed,
             category: ['Cat', 'Dog', 'Fish', 'Bird', 'Reptile', 'Exotic'].sample
         )
-        this_pet.images.attach(io: File.open('/Users/andrewrosario/Development/code/mod4/petsmatch/petsmatch-backend/app/Random-25-512.png'), filename: 'Random-25-512.png')
+        this_pet.images.attach(io: File.open(File.join(File.dirname(__FILE__), 'Random-25-512.png')), filename: 'Random-25-512.png')
     end
 end
 
