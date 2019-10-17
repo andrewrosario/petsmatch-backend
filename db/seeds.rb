@@ -5,3 +5,29 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+require 'faker'
+
+100.times do |i|
+    this_user = User.create(
+        name: Faker::Name.name,
+        age: rand(18...99),
+        gender: Faker::Gender.type,
+        bio: Faker::GreekPhilosophers.quote,
+        username: Faker::Name.first_name,
+        zipcode: 78701
+    )
+    this_user.images.attach(io: File.open('/Users/andrewrosario/Development/code/mod4/petsmatch/petsmatch-backend/app/user.png'), filename: 'user.png')
+    rand(1...3).times do |j|
+        this_pet = Pet.create(
+            user_id: i + 1,
+            name: Faker::Creature::Cat.name,
+            age: rand(1...20),
+            species: Faker::Creature::Animal.name,
+            breed: Faker::Creature::Cat.breed,
+            category: ['Cat', 'Dog', 'Fish', 'Bird', 'Reptile', 'Exotic'].sample
+        )
+        this_pet.images.attach(io: File.open('/Users/andrewrosario/Development/code/mod4/petsmatch/petsmatch-backend/app/Random-25-512.png'), filename: 'Random-25-512.png')
+    end
+end
+
+
