@@ -5,4 +5,5 @@ class User < ApplicationRecord
     has_many :messages
     has_one :preference
     has_many_attached :images
+    has_secure_password
 end
