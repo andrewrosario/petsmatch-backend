@@ -14,7 +14,8 @@ require 'faker'
         gender: Faker::Gender.type,
         bio: Faker::GreekPhilosophers.quote,
         username: Faker::Name.first_name,
-        password: '123',
+        password: 'password',
+        password_confirmation: 'password',
         zipcode: 78701
     )
     this_user.images.attach(io: File.open(File.join(File.dirname(__FILE__), 'user.png')), filename: 'user.png')
