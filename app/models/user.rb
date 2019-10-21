@@ -7,6 +7,7 @@ class User < ApplicationRecord
     has_one_attached :image
     has_secure_password
     validates :username, presence: true
+    validates :email, presence: true
 
     def self.from_token_request(request)
         username = request.params["auth"] && request.params["auth"]["username"]
@@ -18,4 +19,6 @@ class User < ApplicationRecord
         render json: User.all.with_attached_images
     end
 
+    
+    
 end
