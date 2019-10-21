@@ -13,7 +13,7 @@ require 'faker'
         age: rand(18...99),
         gender: Faker::Gender.type,
         bio: Faker::GreekPhilosophers.quote,
-        username: Faker::Name.first_name,
+        email: Faker::Internet.unique.email,
         password: 'password',
         password_confirmation: 'password',
         zipcode: 78701
