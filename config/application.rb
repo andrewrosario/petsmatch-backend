@@ -24,6 +24,15 @@ module PetsmatchBackend
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.0
 
+    config.eager_load_paths += %W(
+      /Users/andrewrosario/.rvm/gems/ruby-2.6.5/gems/knock-2.1.1/lib/
+      /Users/andrewrosario/.rvm/gems/ruby-2.6.5/gems/knock-2.1.1/lib/tasks/
+      /Users/andrewrosario/.rvm/gems/ruby-2.6.5/gems/knock-2.1.1/lib/generators/
+      /Users/andrewrosario/.rvm/gems/ruby-2.6.5/gems/knock-2.1.1/lib/generators/templates/
+      /Users/andrewrosario/.rvm/gems/ruby-2.6.5/gems/knock-2.1.1/lib/generators/knock/
+      /Users/andrewrosario/.rvm/gems/ruby-2.6.5/gems/knock-2.1.1/lib/knock/
+    )
+    
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
