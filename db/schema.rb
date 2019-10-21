@@ -36,7 +36,7 @@ ActiveRecord::Schema.define(version: 2019_10_21_153447) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
-  create_table "chat_tables", force: :cascade do |t|
+  create_table "chats", force: :cascade do |t|
     t.integer "match_id"
   end
 
