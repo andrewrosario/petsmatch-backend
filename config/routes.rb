@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  post '/login', to: 'auth#create'
   resources :matches
   resources :messages
   resources :chats
