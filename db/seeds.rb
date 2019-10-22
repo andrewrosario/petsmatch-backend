@@ -22,10 +22,9 @@ require 'faker'
     rand(1...3).times do |j|
         this_pet = Pet.create(
             user_id: i + 1,
-            name: Faker::Creature::Cat.name,
+            name: Faker::Creature::Dog.name,
             age: rand(1...20),
-            species: Faker::Creature::Animal.name,
-            breed: Faker::Creature::Cat.breed,
+            pet_type: Faker::Creature::Dog.breed,
             category: ['Cat', 'Dog', 'Fish', 'Bird', 'Reptile', 'Exotic'].sample
         )
         this_pet.image.attach(io: File.open(File.join(File.dirname(__FILE__), 'Random-25-512.png')), filename: 'Random-25-512.png')
