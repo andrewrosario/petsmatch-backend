@@ -27,6 +27,7 @@ class UsersController < ApplicationController
     def profile
         @user = User.find(params[:id])
         url = url_for(@user.image)
-        render json: @user.as_json(include: [{image: {include: :blob}}, {pets: {include: {image: {include: :blob}}}}])
+        render json: @user
+
     end
 end
