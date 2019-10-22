@@ -6,7 +6,6 @@ class User < ApplicationRecord
     has_one :preference
     has_one_attached :image
     has_secure_password
-    validates :username, presence: true
     validates :email, presence: true
 
     def self.from_token_request(request)
@@ -19,6 +18,8 @@ class User < ApplicationRecord
         render json: User.all.with_attached_images
     end
 
-    
-    
+    def image_url
+        this_url = url_for(self.image)
+        return this_url
+    end
 end
