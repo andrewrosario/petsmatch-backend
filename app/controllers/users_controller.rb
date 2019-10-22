@@ -3,7 +3,7 @@ class UsersController < ApplicationController
 
     def index
         @users = User.all 
-        render json: @users.as_json(include: :pets)
+        render json: @users.with_attached_image
     end
 
     def create
@@ -22,5 +22,11 @@ class UsersController < ApplicationController
 
     def user_params
         params.require(:user).permit(:name, :email, :password, :password_confirmation, :age, :gender, :bio, :zipcode)
+    end
+
+    def profile
+        @user = User.find(params[:id])
+        url = url_for(@user.image)
+        render json: @user.as_json(include: [{image: {include: :blob}}, {pets: {include: {image: {include: :blob}}}}])
     end
 end

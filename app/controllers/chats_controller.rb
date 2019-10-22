@@ -1,12 +1,22 @@
 class ChatsController < ApplicationController
     def show
-        chat = Chat.find(params[:id])
-        render json: chat.as_json(include: :messages)
+        user = User.find(params[:id])
+        matches = Match.joins(:chat, :messages, :user_one, :user_two).where('user_one_id = ? OR user_two_id = ?', user, user)
+        
+        render json: matches.as_json(include: [{
+                                                messages: {
+                                                    only: [:text, :user_id]
+                                                }}, :user_one, :user_two])
     end
 
     def index
-        chats = Chat.all 
+        chats = Chat.all
         render json: chats.as_json(:include => { :user_one => {:only => [:name, :id]} , :user_two => {:only => [:name, :id]}} )
+    end
+
+    def get_chat
+        chat = Chat.find(params[:id])
+        render json: chat.as_json(include: :messages)
     end
 
     def create
