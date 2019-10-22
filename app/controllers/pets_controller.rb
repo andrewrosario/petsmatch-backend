@@ -1,3 +1,7 @@
 class PetsController < ApplicationController
-    before_action :authenticate_user
+
+    def show
+        @pet = Pet.find(params[:id])
+        render json: @pet
+    end
 end

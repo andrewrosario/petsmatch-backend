@@ -28,7 +28,7 @@ require 'faker'
             breed: Faker::Creature::Cat.breed,
             category: ['Cat', 'Dog', 'Fish', 'Bird', 'Reptile', 'Exotic'].sample
         )
-        this_pet.images.attach(io: File.open(File.join(File.dirname(__FILE__), 'Random-25-512.png')), filename: 'Random-25-512.png')
+        this_pet.image.attach(io: File.open(File.join(File.dirname(__FILE__), 'Random-25-512.png')), filename: 'Random-25-512.png')
     end
 end
 
