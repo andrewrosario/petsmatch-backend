@@ -6,6 +6,29 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 require 'faker'
+require 'open-uri'
+
+def image_fetcher
+    open(Faker::Avatar.image)
+    rescue
+    open("https://robohash.org/sitsequiquia.png?size=300x300&set=set1")
+end
+
+def pet_image_fetches
+    open('http://placegoat.com/200')
+end
+
+# 20.times do |n|
+#   s = Student.create(
+#      ...
+#      #remove profile_picture from here
+#   )
+
+#   s.profile_picture.attach({
+#      io: image_fetcher,
+#      filename: "#{n}_faker_image.jpg"
+#   })
+# end
 
 100.times do |i|
     this_user = User.create(
@@ -18,7 +41,11 @@ require 'faker'
         password_confirmation: 'password',
         zipcode: 78701
     )
-    this_user.image.attach(io: File.open(File.join(File.dirname(__FILE__), 'user.png')), filename: 'user.png')
+    # this_user.image.attach(io: File.open(File.join(File.dirname(__FILE__), 'user.png')), filename: 'user.png')
+    this_user.image.attach({
+        io: image_fetcher,
+        filename: "#{i}_faker_image.jpg"
+     })
     rand(1...3).times do |j|
         this_pet = Pet.create(
             user_id: i + 1,
@@ -28,7 +55,11 @@ require 'faker'
             breed: Faker::Creature::Cat.breed,
             category: ['Cat', 'Dog', 'Fish', 'Bird', 'Reptile', 'Exotic'].sample
         )
-        this_pet.image.attach(io: File.open(File.join(File.dirname(__FILE__), 'Random-25-512.png')), filename: 'Random-25-512.png')
+        # this_pet.image.attach(io: File.open(File.join(File.dirname(__FILE__), 'Random-25-512.png')), filename: 'Random-25-512.png')
+        this_pet.image.attach({
+            io: pet_image_fetches,
+            filename: "#{i}_faker_image.jpg"
+         })
     end
 end
 
