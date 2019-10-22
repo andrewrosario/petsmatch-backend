@@ -4,7 +4,7 @@ class User < ApplicationRecord
     has_many :chats, through: :matches
     has_many :messages
     has_one :preference
-    has_many_attached :images
+    has_one_attached :image
     has_secure_password
     validates :email, presence: true
     

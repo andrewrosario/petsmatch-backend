@@ -18,7 +18,7 @@ require 'faker'
         password_confirmation: 'password',
         zipcode: 78701
     )
-    this_user.images.attach(io: File.open(File.join(File.dirname(__FILE__), 'user.png')), filename: 'user.png')
+    this_user.image.attach(io: File.open(File.join(File.dirname(__FILE__), 'user.png')), filename: 'user.png')
     rand(1...3).times do |j|
         this_pet = Pet.create(
             user_id: i + 1,
