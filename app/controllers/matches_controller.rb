@@ -13,6 +13,16 @@ class MatchesController < ApplicationController
         render json: @match
     end
 
+    def delete
+        
+        @matches = Match.all
+        match = Match.all.where('user_one_id = ? or user_two_id = ?', params[:user_one_id], params[:user_one_id])
+        puts match
+        Match.destroy(match.ids)
+        render json: @matches
+        
+    end
+
     def match_params
         params.permit(:user_one_id, :user_two_id)
     end
