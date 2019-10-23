@@ -15,20 +15,13 @@ class UsersController < ApplicationController
             render json: { error: 'failed to create user' }, status: :not_acceptable
           end
     end
-
-    def profile
-        @user = current_user
-        render json: @user.as_json(include: :pets), status: :accepted
-    end
-
+    
     def user_params
         params.require(:user).permit(:name, :email, :password, :password_confirmation, :age, :gender, :bio, :zipcode)
     end
 
     def profile
         @user = User.find(params[:id])
-        url = url_for(@user.image)
         render json: @user
-
     end
 end

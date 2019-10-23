@@ -2,6 +2,19 @@ class UserSerializer < ActiveModel::Serializer
   include Rails.application.routes.url_helpers
 
   attributes :id, :name, :age, :gender, :bio, :zipcode, :image, :pets, :matches
+  # :started_matches, :received_matches
+
+  def pets
+    ActiveModelSerializers::SerializableResource.new(object.pets,  each_serializer: PetSerializer)
+  end
+
+  def started_matches
+    ActiveModelSerializers::SerializableResource.new(object.started_matches,  each_serializer: MatchStartSerializer)
+  end
+
+  def received_matches
+    ActiveModelSerializers::SerializableResource.new(object.received_matches,  each_serializer: MatchReceiveSerializer)
+  end
 
   def image
     return unless object.image.attached?
@@ -13,7 +26,6 @@ class UserSerializer < ActiveModel::Serializer
   end
 
   def image_url
-    
     the_url = url_for(object.image)
     part_one = the_url[0..15]
     part_two = the_url[16..-1]
@@ -21,6 +33,9 @@ class UserSerializer < ActiveModel::Serializer
   end
 
   def matches
-    matches = Match.all.where('user_one_id = ? or user_two_id = ?', object.id, object.id)
+    received = ActiveModelSerializers::SerializableResource.new(object.received_matches,  each_serializer: MatchReceiveSerializer)
+    sent = ActiveModelSerializers::SerializableResource.new(object.started_matches,  each_serializer: MatchStartSerializer)
+    puts received
+    puts sent
   end
 end
