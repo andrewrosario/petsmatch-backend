@@ -68,7 +68,6 @@ ActiveRecord::Schema.define(version: 2019_10_23_142343) do
   create_table "preferences", force: :cascade do |t|
     t.integer "min_age"
     t.integer "max_age"
-    t.string "pet_type"
     t.boolean "wants_men"
     t.boolean "wants_women"
     t.boolean "wants_other"
@@ -76,6 +75,13 @@ ActiveRecord::Schema.define(version: 2019_10_23_142343) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "user_id"
+    t.boolean "wants_dog"
+    t.boolean "wants_cat"
+    t.boolean "wants_fish"
+    t.boolean "wants_reptile"
+    t.boolean "wants_bird"
+    t.boolean "wants_exotic"
+    t.boolean "wants_rodent"
   end
 
   create_table "users", force: :cascade do |t|
