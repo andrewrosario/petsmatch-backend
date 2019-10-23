@@ -20,7 +20,7 @@ class MatchesController < ApplicationController
     def delete
         @matches = Match.all
         match = Match.all.where('user_one_id = ? or user_two_id = ?', params[:user_one_id], params[:user_one_id])
-        chat = Chat.find_by(match_id: match.id)
+        chat = Chat.find_by(match_id: match.ids)
         Match.destroy(match.ids)
         render json: @matches   
     end
