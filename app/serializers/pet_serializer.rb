@@ -1,7 +1,7 @@
 class PetSerializer < ActiveModel::Serializer
   include Rails.application.routes.url_helpers
 
-  attributes :id, :name, :age, :species, :breed, :category, :image
+  attributes :id, :name, :age, :category, :pet_type, :image
 
   def image
     return unless object.image.attached?
