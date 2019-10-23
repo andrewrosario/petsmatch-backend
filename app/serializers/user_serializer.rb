@@ -1,8 +1,7 @@
 class UserSerializer < ActiveModel::Serializer
   include Rails.application.routes.url_helpers
 
-  attributes :id, :name, :age, :gender, :bio, :zipcode, :image, :pets, :matches
-  # :started_matches, :received_matches
+  attributes :id, :name, :age, :gender, :bio, :zipcode, :image, :pets, :started_matches, :received_matches
 
   def pets
     ActiveModelSerializers::SerializableResource.new(object.pets,  each_serializer: PetSerializer)
