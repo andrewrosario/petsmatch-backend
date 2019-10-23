@@ -15,6 +15,6 @@ class PreferencesController < ApplicationController
     private
 
     def preference_params
-        params.require(:preference).permit(:min_age, :max_age, :pet_type, :wants_men, :wants_women, :wants_other, :wants_non_binary, :wants_dog, :wants_cat, :wants_fish, :wants_reptile, :wants_bid, :wants_exotic, :wants_rodent, :user_id)
+        params.require(:preference).permit(:min_age, :max_age, :pet_type, :wants_men, :wants_women, :wants_other, :wants_non_binary, :wants_dog, :wants_cat, :wants_fish, :wants_reptile, :wants_bird, :wants_exotic, :wants_rodent, :user_id)
     end
 end
