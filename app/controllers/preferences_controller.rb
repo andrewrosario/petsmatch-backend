@@ -1,7 +1,14 @@
 class PreferencesController < ApplicationController
+    skip_before_action :authorized, only: [:create]
 
     def create
-        @preference = Preference.create(preference_params)
+        @preference = Preference.create(user_id: params[:user_id])
+        render json: @preference.as_json(include: :user)
+    end
+
+    def update
+        @preference = Preference.find_by(user_id: params[:preference][:user_id])
+        @preference.update(preference_params)
         render json: @preference.as_json(include: :user)
     end
 

@@ -10,15 +10,10 @@ class UsersController < ApplicationController
         @user = User.create(user_params)
         if @user.valid?
             token = encode_token({ user_id: @user.id })
-            render json: { user: @user.as_json(include: :pets), jwt: token }, status: :created
+            render json: { user: @user.as_json(include: [:pets, :preference]), jwt: token }, status: :created
           else
             render json: { error: 'failed to create user' }, status: :not_acceptable
           end
-    end
-
-    def profile
-        @user = current_user
-        render json: @user.as_json(include: :pets), status: :accepted
     end
 
     def user_params
@@ -29,6 +24,5 @@ class UsersController < ApplicationController
         @user = User.find(params[:id])
         url = url_for(@user.image)
         render json: @user
-
     end
 end
