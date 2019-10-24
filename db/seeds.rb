@@ -8,31 +8,41 @@
 require 'faker'
 require 'open-uri'
 
-def image_fetcher
-    open(Faker::Avatar.image)
-    rescue
-    open("https://robohash.org/sitsequiquia.png?size=300x300&set=set1")
+def image_fetcher(num, gender)
+    # open(Faker::Avatar.image)
+    # rescue
+    puts gender
+    open("https://randomuser.me/portraits/#{gender}/#{num}.jpg")
 end
 
 def pet_image_fetches
     open('http://placegoat.com/200')
 end
 
-1000.times do |i|
+200.times do |i|
+    gender = ['male', 'male', 'male', 'female', 'female', 'female', 'non-binary', 'other'].sample
     this_user = User.create(
         name: Faker::Name.name,
-        age: rand(18...99),
-        gender: ['male', 'male', 'male', 'female', 'female', 'female', 'non-binary', 'other'].sample,
+        age: rand(18...50),
+        gender: gender,
         bio: Faker::GreekPhilosophers.quote,
         email: Faker::Internet.unique.email,
         password: 'password',
         password_confirmation: 'password',
         zipcode: 78701
     )
-    this_user.image.attach({
-        io: image_fetcher,
-        filename: "#{i}_faker_image.jpg"
-     })
+    number = rand(1..99)
+    if(gender === 'male' || gender === 'female')
+        this_user.image.attach({
+            io: image_fetcher(number, gender),
+            filename: "#{number}.jpg"
+        })
+    else 
+        this_user.image.attach({
+            io: image_fetcher(number, 'female'),
+            filename: "#{number}.jpg"
+        })
+    end
     # this_user.image.attach(io: File.open(File.join(File.dirname(__FILE__), 'user.png')), filename: 'user.png')
     rand(1...3).times do |j|
         this_pet = Pet.create(
@@ -51,7 +61,7 @@ end
     end
     age = rand(18..40)
     this_preference = Preference.create(
-        user_id: i + 1,
+        user_id: this_user.id,
         min_age: age,
         max_age: age + rand(5..15),
         wants_men: [true, false].sample,
@@ -66,6 +76,7 @@ end
         wants_exotic:[true, false].sample,
         wants_rodent:[true, false].sample,
     )
+    puts this_preference.id
 end
 
 

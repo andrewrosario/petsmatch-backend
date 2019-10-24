@@ -26,73 +26,82 @@ class UsersController < ApplicationController
             @users_to_return.concat(@users.select{|user| user.gender.downcase == 'non-binary'})
         end
 
-        if(!@prefs.wants_dog)
-            @users_to_return.select! do |user| 
-                if !user.pets.any? {|pet| pet.category.downcase === 'dog'}
-                    user
-                end
-            end
-        end
-        if(!@prefs.wants_cat)
-            @users_to_return.select! do |user| 
-                if !user.pets.any? {|pet| pet.category.downcase === 'cat'}
-                    user
-                end
-            end
-        end
-        if(!@prefs.wants_fish)
-            @users_to_return.select! do |user| 
-                if !user.pets.any? {|pet| pet.category.downcase === 'fish'}
-                    user
-                end
-            end
-        end
-        if(!@prefs.wants_cat)
-            @users_to_return.select! do |user| 
-                if !user.pets.any? {|pet| pet.category.downcase === 'reptile'}
-                    user
-                end
-            end
-        end
-        if(!@prefs.wants_bird)
-            @users_to_return.select! do |user| 
-                if !user.pets.any? {|pet| pet.category.downcase === 'bird'}
-                    user
-                end
-            end
-        end
-        if(!@prefs.wants_exotic)
-            @users_to_return.select! do |user| 
-                if !user.pets.any? {|pet| pet.category.downcase === 'exotic'}
-                    user
-                end
-            end
-        end
-        if(!@prefs.wants_rodent)
-            @users_to_return.select! do |user| 
-                if !user.pets.any? {|pet| pet.category.downcase === 'rodent'}
-                    user
+        ['dog', 'cat', 'fish', 'reptile', 'bird', 'exotic', 'rodent'].each do |pet_type|
+            if(!@prefs["wants_#{pet_type}"])
+                @users_to_return.select! do |user| 
+                    if !user.pets.any? {|pet| pet.category.downcase === pet_type}
+                        user
+                    end
                 end
             end
         end
 
-        case @current_user.gender.downcase
-        when 'male'
-            gender_check = 'wants_men'
-        when 'female'
-            gender_check = 'wants_women'
-        when 'other'
-            gender_check = 'wants_other'
-        when 'non-binary'
-            gender_check = 'wants_non_binary'
-        end
+        # if(!@prefs.wants_dog)
+        #     @users_to_return.select! do |user| 
+        #         if !user.pets.any? {|pet| pet.category.downcase === 'dog'}
+        #             user
+        #         end
+        #     end
+        # end
+        # if(!@prefs.wants_cat)
+        #     @users_to_return.select! do |user| 
+        #         if !user.pets.any? {|pet| pet.category.downcase === 'cat'}
+        #             user
+        #         end
+        #     end
+        # end
+        # if(!@prefs.wants_fish)
+        #     @users_to_return.select! do |user| 
+        #         if !user.pets.any? {|pet| pet.category.downcase === 'fish'}
+        #             user
+        #         end
+        #     end
+        # end
+        # if(!@prefs.wants_cat)
+        #     @users_to_return.select! do |user| 
+        #         if !user.pets.any? {|pet| pet.category.downcase === 'reptile'}
+        #             user
+        #         end
+        #     end
+        # end
+        # if(!@prefs.wants_bird)
+        #     @users_to_return.select! do |user| 
+        #         if !user.pets.any? {|pet| pet.category.downcase === 'bird'}
+        #             user
+        #         end
+        #     end
+        # end
+        # if(!@prefs.wants_exotic)
+        #     @users_to_return.select! do |user| 
+        #         if !user.pets.any? {|pet| pet.category.downcase === 'exotic'}
+        #             user
+        #         end
+        #     end
+        # end
+        # if(!@prefs.wants_rodent)
+        #     @users_to_return.select! do |user| 
+        #         if !user.pets.any? {|pet| pet.category.downcase === 'rodent'}
+        #             user
+        #         end
+        #     end
+        # end
+
+        # case @current_user.gender.downcase
+        # when 'male'
+        #     gender_check = 'wants_men'
+        # when 'female'
+        #     gender_check = 'wants_women'
+        # when 'other'
+        #     gender_check = 'wants_other'
+        # when 'non-binary'
+        #     gender_check = 'wants_non_binary'
+        # end
 
         # @users_to_return.select! do |user|
         #     user[gender_check] === true
         # end
-
-
-
+        puts  @users_to_return
+        
         render json: @users_to_return
     end
 
@@ -104,9 +113,6 @@ class UsersController < ApplicationController
           else
             render json: { error: 'failed to create user' }, status: :not_acceptable
           end
-    end
-
-    def show
     end
 
     def update
