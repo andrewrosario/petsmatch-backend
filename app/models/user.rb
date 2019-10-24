@@ -10,6 +10,7 @@ class User < ApplicationRecord
     has_secure_password
     validates :email, presence: true
 
+
     def index
         @users = 
         render json: User.all.with_attached_images

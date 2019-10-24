@@ -7,49 +7,77 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 require 'faker'
 require 'open-uri'
+require 'rest-client'
+require 'json'
 
-def image_fetcher
-    open(Faker::Avatar.image)
-    rescue
-    open("https://robohash.org/sitsequiquia.png?size=300x300&set=set1")
+def image_fetcher(num, gender)
+    # open(Faker::Avatar.image)
+    # rescue
+    puts gender
+    open("https://randomuser.me/portraits/#{gender}/#{num}.jpg")
 end
 
-def pet_image_fetches
-    open('http://placegoat.com/200')
+def pet_image_fetches(category)
+    response = RestClient::Request.execute(
+        method: :get,
+        url: "https://pixabay.com/api/?key=14031171-f6e96ca716af92cd22ce48f78&q=#{category}+pet&image_type=photo"
+        )
+        data = JSON[response.body]
+        number = rand(1..10)
+        puts data['hits'][number]['largeImageURL']
+    open(data['hits'][number]['largeImageURL'])
 end
 
-100.times do |i|
+300.times do |i|
+    gender = ['male', 'male', 'male', 'female', 'female', 'female', 'non-binary', 'other'].sample
     this_user = User.create(
         name: Faker::Name.name,
-        age: rand(18...99),
-        gender: ['male', 'male', 'male', 'female', 'female', 'female', 'non-binary', 'other'].sample,
+        age: rand(18...50),
+        gender: gender,
         bio: Faker::GreekPhilosophers.quote,
         email: Faker::Internet.unique.email,
         password: 'password',
         password_confirmation: 'password',
         zipcode: 78701
     )
-    this_user.image.attach({
-        io: image_fetcher,
-        filename: "#{i}_faker_image.jpg"
-     })
+    number = rand(1..99)
+    if gender === 'male'
+        this_user.image.attach({
+            io: image_fetcher(number, 'men'),
+            filename: "#{number}.jpg"
+        })
+    elsif gender === 'female'
+        this_user.image.attach({
+            io: image_fetcher(number, 'women'),
+            filename: "#{number}.jpg"
+        })
+    else 
+        this_user.image.attach({
+            io: image_fetcher(number, 'women'),
+            filename: "#{number}.jpg"
+        })
+    end
     rand(1...3).times do |j|
+        category = ['Cat', 'Dog', 'Fish', 'Bird', 'Reptile', 'Exotic'].sample
         this_pet = Pet.create(
             user_id: i + 1,
             name: Faker::Creature::Dog.name,
             age: rand(1...20),
             pet_type: Faker::Creature::Dog.breed,
-            category: ['Cat', 'Dog', 'Fish', 'Bird', 'Reptile', 'Exotic'].sample
+            category: category
         )
+
         this_pet.image.attach({
-            io: pet_image_fetches,
+            io: pet_image_fetches(category),
             filename: "#{i}_faker_image.jpg"
          })
+
     end
+    age = rand(18..40)
     this_preference = Preference.create(
-        user_id: i + 1,
-        min_age: [18..40].sample,
-        max_age: [40..99].sample,
+        user_id: this_user.id,
+        min_age: age,
+        max_age: age + rand(5..15),
         wants_men: [true, false].sample,
         wants_women:[true, false].sample,
         wants_other:[true, false].sample,
@@ -62,6 +90,5 @@ end
         wants_exotic:[true, false].sample,
         wants_rodent:[true, false].sample,
     )
+    puts this_preference.id
 end
-
-
