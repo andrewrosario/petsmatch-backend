@@ -18,30 +18,17 @@ def pet_image_fetches
     open('http://placegoat.com/200')
 end
 
-# 20.times do |n|
-#   s = Student.create(
-#      ...
-#      #remove profile_picture from here
-#   )
-
-#   s.profile_picture.attach({
-#      io: image_fetcher,
-#      filename: "#{n}_faker_image.jpg"
-#   })
-# end
-
 100.times do |i|
     this_user = User.create(
         name: Faker::Name.name,
         age: rand(18...99),
-        gender: Faker::Gender.type,
+        gender: ['male', 'male', 'male', 'female', 'female', 'female', 'non-binary', 'other']
         bio: Faker::GreekPhilosophers.quote,
         email: Faker::Internet.unique.email,
         password: 'password',
         password_confirmation: 'password',
         zipcode: 78701
     )
-    # this_user.image.attach(io: File.open(File.join(File.dirname(__FILE__), 'user.png')), filename: 'user.png')
     this_user.image.attach({
         io: image_fetcher,
         filename: "#{i}_faker_image.jpg"
@@ -54,12 +41,28 @@ end
             pet_type: Faker::Creature::Dog.breed,
             category: ['Cat', 'Dog', 'Fish', 'Bird', 'Reptile', 'Exotic'].sample
         )
-        # this_pet.image.attach(io: File.open(File.join(File.dirname(__FILE__), 'Random-25-512.png')), filename: 'Random-25-512.png')
         this_pet.image.attach({
             io: pet_image_fetches,
             filename: "#{i}_faker_image.jpg"
          })
     end
+    this_preference = Preference.create(
+        user_id: i + 1,
+        min_age: [18..40],
+        max_age: [40..99],
+        wants_men: [true, false].sample,
+        wants_women:[true, false].sample,
+        wants_other:[true, false].sample,
+        wants_non_binary:[true, false].sample,
+        user_id: this_user.id,
+        wants_dog:[true, false].sample,
+        wants_cat:[true, false].sample,
+        wants_fish:[true, false].sample,
+        wants_reptile:[true, false].sample,
+        wants_bird:[true, false].sample,
+        wants_exotic:[true, false].sample,
+        wants_rodent:[true, false].sample,
+    )
 end
 
 
