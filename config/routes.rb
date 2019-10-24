@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   resources :chats
   resources :pets
   resources :preferences
-  resources :users, only: [:index, :create]
+  resources :users, only: [:index, :create, :show]
   get '/profile/:id', to:'users#profile'
   get '/chat/:id', to: 'chats#get_chat'
   delete '/matches', to: 'matches#delete'

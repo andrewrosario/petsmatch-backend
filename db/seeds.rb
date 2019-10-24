@@ -18,11 +18,11 @@ def pet_image_fetches
     open('http://placegoat.com/200')
 end
 
-100.times do |i|
+1000.times do |i|
     this_user = User.create(
         name: Faker::Name.name,
         age: rand(18...99),
-        gender: ['male', 'male', 'male', 'female', 'female', 'female', 'non-binary', 'other']
+        gender: ['male', 'male', 'male', 'female', 'female', 'female', 'non-binary', 'other'].sample,
         bio: Faker::GreekPhilosophers.quote,
         email: Faker::Internet.unique.email,
         password: 'password',
@@ -33,6 +33,7 @@ end
         io: image_fetcher,
         filename: "#{i}_faker_image.jpg"
      })
+    # this_user.image.attach(io: File.open(File.join(File.dirname(__FILE__), 'user.png')), filename: 'user.png')
     rand(1...3).times do |j|
         this_pet = Pet.create(
             user_id: i + 1,
@@ -45,16 +46,18 @@ end
             io: pet_image_fetches,
             filename: "#{i}_faker_image.jpg"
          })
+        # this_pet.image.attach(io: File.open(File.join(File.dirname(__FILE__), 'Random-25-512.png')), filename: 'Random-25-512.png')
+
     end
+    age = rand(18..40)
     this_preference = Preference.create(
         user_id: i + 1,
-        min_age: [18..40],
-        max_age: [40..99],
+        min_age: age,
+        max_age: age + rand(5..15),
         wants_men: [true, false].sample,
         wants_women:[true, false].sample,
         wants_other:[true, false].sample,
         wants_non_binary:[true, false].sample,
-        user_id: this_user.id,
         wants_dog:[true, false].sample,
         wants_cat:[true, false].sample,
         wants_fish:[true, false].sample,
