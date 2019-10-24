@@ -105,13 +105,26 @@ class UsersController < ApplicationController
             render json: { error: 'failed to create user' }, status: :not_acceptable
           end
     end
-    
-    def user_params
-        params.permit(:name, :email, :password, :password_confirmation, :age, :gender, :bio, :zipcode, :image)
+
+    def show
+    end
+
+    def update
+        @user = User.find(params[:id])
+        @user.update(user_params)
+        render json: @user.as_json(include: :pets)
     end
 
     def profile
         @user = User.find(params[:id])
         render json: @user
     end
+
+    private
+    
+    def user_params
+        params.permit(:id, :name, :email, :password, :password_confirmation, :age, :gender, :bio, :zipcode, :image)
+    end
+
+
 end
