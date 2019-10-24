@@ -22,7 +22,7 @@ end
     this_user = User.create(
         name: Faker::Name.name,
         age: rand(18...99),
-        gender: ['male', 'male', 'male', 'female', 'female', 'female', 'non-binary', 'other']
+        gender: ['male', 'male', 'male', 'female', 'female', 'female', 'non-binary', 'other'].sample,
         bio: Faker::GreekPhilosophers.quote,
         email: Faker::Internet.unique.email,
         password: 'password',
@@ -48,13 +48,12 @@ end
     end
     this_preference = Preference.create(
         user_id: i + 1,
-        min_age: [18..40],
-        max_age: [40..99],
+        min_age: [18..40].sample,
+        max_age: [40..99].sample,
         wants_men: [true, false].sample,
         wants_women:[true, false].sample,
         wants_other:[true, false].sample,
         wants_non_binary:[true, false].sample,
-        user_id: this_user.id,
         wants_dog:[true, false].sample,
         wants_cat:[true, false].sample,
         wants_fish:[true, false].sample,
