@@ -7,6 +7,8 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 require 'faker'
 require 'open-uri'
+require 'rest-client'
+require 'json'
 
 def image_fetcher(num, gender)
     # open(Faker::Avatar.image)
@@ -15,11 +17,18 @@ def image_fetcher(num, gender)
     open("https://randomuser.me/portraits/#{gender}/#{num}.jpg")
 end
 
-def pet_image_fetches
-    open('http://placegoat.com/200')
+def pet_image_fetches(category)
+    response = RestClient::Request.execute(
+        method: :get,
+        url: "https://pixabay.com/api/?key=14031171-f6e96ca716af92cd22ce48f78&q=#{category}+pet&image_type=photo"
+        )
+        data = JSON[response.body]
+        number = rand(1..10)
+        puts data['hits'][number]['largeImageURL']
+    open(data['hits'][number]['largeImageURL'])
 end
 
-200.times do |i|
+300.times do |i|
     gender = ['male', 'male', 'male', 'female', 'female', 'female', 'non-binary', 'other'].sample
     this_user = User.create(
         name: Faker::Name.name,
@@ -32,31 +41,36 @@ end
         zipcode: 78701
     )
     number = rand(1..99)
-    if(gender === 'male' || gender === 'female')
+    if gender === 'male'
         this_user.image.attach({
-            io: image_fetcher(number, gender),
+            io: image_fetcher(number, 'men'),
+            filename: "#{number}.jpg"
+        })
+    elsif gender === 'female'
+        this_user.image.attach({
+            io: image_fetcher(number, 'women'),
             filename: "#{number}.jpg"
         })
     else 
         this_user.image.attach({
-            io: image_fetcher(number, 'female'),
+            io: image_fetcher(number, 'women'),
             filename: "#{number}.jpg"
         })
     end
-    # this_user.image.attach(io: File.open(File.join(File.dirname(__FILE__), 'user.png')), filename: 'user.png')
     rand(1...3).times do |j|
+        category = ['Cat', 'Dog', 'Fish', 'Bird', 'Reptile', 'Exotic'].sample
         this_pet = Pet.create(
             user_id: i + 1,
             name: Faker::Creature::Dog.name,
             age: rand(1...20),
             pet_type: Faker::Creature::Dog.breed,
-            category: ['Cat', 'Dog', 'Fish', 'Bird', 'Reptile', 'Exotic'].sample
+            category: category
         )
+
         this_pet.image.attach({
-            io: pet_image_fetches,
+            io: pet_image_fetches(category),
             filename: "#{i}_faker_image.jpg"
          })
-        # this_pet.image.attach(io: File.open(File.join(File.dirname(__FILE__), 'Random-25-512.png')), filename: 'Random-25-512.png')
 
     end
     age = rand(18..40)
@@ -78,5 +92,3 @@ end
     )
     puts this_preference.id
 end
-
-

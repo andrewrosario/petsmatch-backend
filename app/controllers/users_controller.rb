@@ -13,17 +13,18 @@ class UsersController < ApplicationController
         @users_to_return = []
 
         @users = User.all.where('age BETWEEN ? AND ?', @prefs.min_age, @prefs.max_age)
-        if @prefs.wants_men == true
-            @users_to_return.concat(@users.select{|user| user.gender.downcase == 'male'})
-        end
-        if @prefs.wants_women == true 
-            @users_to_return.concat(@users.select{|user| user.gender.downcase == 'female'})
-        end
-        if @prefs.wants_other == true
-            @users_to_return.concat(@users.select{|user| user.gender.downcase == 'other'})
-        end
-        if @prefs.wants_non_binary == true 
-            @users_to_return.concat(@users.select{|user| user.gender.downcase == 'non-binary'})
+
+        ['male', 'female', 'other', 'non-binary'].each do |gender_type|
+            if(gender_type === 'male')
+                this_gender = 'men'
+            elsif(gender_type === 'female')
+                this_gender = 'women'
+            else
+                this_gender = gender_type
+            end
+            if @prefs["wants_#{this_gender}"] == true
+                @users_to_return.concat(@users.select{|user| user.gender.downcase == gender_type})
+            end
         end
 
         ['dog', 'cat', 'fish', 'reptile', 'bird', 'exotic', 'rodent'].each do |pet_type|
@@ -36,72 +37,43 @@ class UsersController < ApplicationController
             end
         end
 
-        # if(!@prefs.wants_dog)
-        #     @users_to_return.select! do |user| 
-        #         if !user.pets.any? {|pet| pet.category.downcase === 'dog'}
-        #             user
-        #         end
-        #     end
-        # end
-        # if(!@prefs.wants_cat)
-        #     @users_to_return.select! do |user| 
-        #         if !user.pets.any? {|pet| pet.category.downcase === 'cat'}
-        #             user
-        #         end
-        #     end
-        # end
-        # if(!@prefs.wants_fish)
-        #     @users_to_return.select! do |user| 
-        #         if !user.pets.any? {|pet| pet.category.downcase === 'fish'}
-        #             user
-        #         end
-        #     end
-        # end
-        # if(!@prefs.wants_cat)
-        #     @users_to_return.select! do |user| 
-        #         if !user.pets.any? {|pet| pet.category.downcase === 'reptile'}
-        #             user
-        #         end
-        #     end
-        # end
-        # if(!@prefs.wants_bird)
-        #     @users_to_return.select! do |user| 
-        #         if !user.pets.any? {|pet| pet.category.downcase === 'bird'}
-        #             user
-        #         end
-        #     end
-        # end
-        # if(!@prefs.wants_exotic)
-        #     @users_to_return.select! do |user| 
-        #         if !user.pets.any? {|pet| pet.category.downcase === 'exotic'}
-        #             user
-        #         end
-        #     end
-        # end
-        # if(!@prefs.wants_rodent)
-        #     @users_to_return.select! do |user| 
-        #         if !user.pets.any? {|pet| pet.category.downcase === 'rodent'}
-        #             user
-        #         end
-        #     end
-        # end
+        case @current_user.gender.downcase
+        when 'male'
+            gender_check = 'wants_men'
+        when 'female'
+            gender_check = 'wants_women'
+        when 'other'
+            gender_check = 'wants_other'
+        when 'non-binary'
+            gender_check = 'wants_non_binary'
+        end
 
-        # case @current_user.gender.downcase
-        # when 'male'
-        #     gender_check = 'wants_men'
-        # when 'female'
-        #     gender_check = 'wants_women'
-        # when 'other'
-        #     gender_check = 'wants_other'
-        # when 'non-binary'
-        #     gender_check = 'wants_non_binary'
-        # end
+        @users_to_return.select! do |user|
+            user.preference[gender_check] === true
+        end
 
-        # @users_to_return.select! do |user|
-        #     user[gender_check] === true
-        # end
-        puts  @users_to_return
-        
+        @current_user_pet_categories = @current_user.pets.map do |pet|
+            puts '================================================================================================================'
+            pet.category
+        end
+
+        @users_to_return.select! do |user| 
+            wants = true
+            puts user
+            puts user.preference
+            @current_user_pet_categories.each do |category|
+                puts category
+                puts user.preference["wants_#{category.downcase}"]
+                if !user.preference["wants_#{category.downcase}"]
+                    wants = false
+                end
+            end
+            wants
+        end
+
+
+        puts @current_user_pet_categories
+
         render json: @users_to_return
     end
 
@@ -131,6 +103,4 @@ class UsersController < ApplicationController
     def user_params
         params.permit(:id, :name, :email, :password, :password_confirmation, :age, :gender, :bio, :zipcode, :image)
     end
-
-
 end
