@@ -20,4 +20,14 @@ class User < ApplicationRecord
         this_url = url_for(self.image)
         return this_url
     end
+
+    def pets_i_want
+        pet_types = []
+        ['dog', 'cat', 'fish', 'reptile', 'bird', 'exotic', 'rodent'].each do |type|
+            if(self.preference["wants_#{type}"])
+                pet_types.push(type)
+            end
+        end
+        pet_types
+    end
 end

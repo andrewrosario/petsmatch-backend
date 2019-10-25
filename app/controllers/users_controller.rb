@@ -10,8 +10,9 @@ class UsersController < ApplicationController
         @current_user = User.find(params[:id])
         @prefs = @current_user.preference
         @users_to_return = []
-        @pets_i_want = []
         @users = User.all.where('age BETWEEN ? AND ?', @prefs.min_age, @prefs.max_age)
+
+        
 
         ['male', 'female', 'other', 'non-binary'].each do |gender_type|
             if(gender_type === 'male')
@@ -33,8 +34,6 @@ class UsersController < ApplicationController
                         user
                     end
                 end
-            else  
-                @pets_i_want.push(pet_type)
             end
         end
 
@@ -68,9 +67,9 @@ class UsersController < ApplicationController
         end
 
         puts '==================================================================================================================================================='
-        puts @current_user_pet_categories
-        puts '==================================================================================================================================================='
-        puts @pets_i_want
+        # puts @current_user_pet_categories
+        puts 'Pets I Want ==================================================================================================================================================='
+        puts @current_user.pets_i_want
 
         render json: @users_to_return
     end
