@@ -10,7 +10,7 @@ class UsersController < ApplicationController
         @current_user = User.find(params[:id])
         @prefs = @current_user.preference
         @users_to_return = []
-
+        @pets_i_want = []
         @users = User.all.where('age BETWEEN ? AND ?', @prefs.min_age, @prefs.max_age)
 
         ['male', 'female', 'other', 'non-binary'].each do |gender_type|
@@ -33,6 +33,8 @@ class UsersController < ApplicationController
                         user
                     end
                 end
+            else  
+                @pets_i_want.push(pet_type)
             end
         end
 
@@ -52,17 +54,12 @@ class UsersController < ApplicationController
         end
 
         @current_user_pet_categories = @current_user.pets.map do |pet|
-            puts '================================================================================================================'
             pet.category
         end
 
         @users_to_return.select! do |user| 
             wants = true
-            puts user
-            puts user.preference
             @current_user_pet_categories.each do |category|
-                puts category
-                puts user.preference["wants_#{category.downcase}"]
                 if !user.preference["wants_#{category.downcase}"]
                     wants = false
                 end
@@ -70,8 +67,10 @@ class UsersController < ApplicationController
             wants
         end
 
-
+        puts '==================================================================================================================================================='
         puts @current_user_pet_categories
+        puts '==================================================================================================================================================='
+        puts @pets_i_want
 
         render json: @users_to_return
     end
