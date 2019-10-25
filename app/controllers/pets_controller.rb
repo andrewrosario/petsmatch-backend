@@ -7,7 +7,6 @@ class PetsController < ApplicationController
 
     def create
         @pet = Pet.create(pet_params)
-        byebug
         render json: @pet.as_json(:include => {:user => {:include => :preference}})
     end
 

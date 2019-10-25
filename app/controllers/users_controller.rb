@@ -12,8 +12,6 @@ class UsersController < ApplicationController
         @users_to_return = []
         @users = User.all.where('age BETWEEN ? AND ?', @prefs.min_age, @prefs.max_age)
 
-        
-
         ['male', 'female', 'other', 'non-binary'].each do |gender_type|
             if(gender_type === 'male')
                 this_gender = 'men'
@@ -65,11 +63,6 @@ class UsersController < ApplicationController
             end
             wants
         end
-
-        puts '==================================================================================================================================================='
-        # puts @current_user_pet_categories
-        puts 'Pets I Want ==================================================================================================================================================='
-        puts @current_user.pets_i_want
 
         render json: @users_to_return
     end

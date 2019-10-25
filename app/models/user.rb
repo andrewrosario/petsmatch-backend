@@ -1,8 +1,8 @@
 class User < ApplicationRecord
     has_many :pets
 
-    has_many :started_matches, class_name: 'Match'   , foreign_key: :user_one_id
-    has_many :received_matches, class_name: 'Match' , foreign_key: :user_two_id
+    has_many :started_matches, class_name: 'Match', foreign_key: :user_one_id
+    has_many :received_matches, class_name: 'Match', foreign_key: :user_two_id
 
     has_many :messages
     has_one :preference
@@ -12,7 +12,6 @@ class User < ApplicationRecord
 
 
     def index
-        @users = 
         render json: User.all.with_attached_images
     end
 
