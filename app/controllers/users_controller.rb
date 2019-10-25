@@ -3,7 +3,6 @@ class UsersController < ApplicationController
 
     def index
         @users = User.all
-        byebug
         render json: @users.with_attached_image
     end
 

@@ -11,8 +11,6 @@ require 'rest-client'
 require 'json'
 
 def image_fetcher(num, gender)
-    # open(Faker::Avatar.image)
-    # rescue
     puts gender
     open("https://randomuser.me/portraits/#{gender}/#{num}.jpg")
 end
