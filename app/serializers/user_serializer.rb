@@ -29,7 +29,7 @@ class UserSerializer < ActiveModel::Serializer
     the_url = url_for(object.image)
     part_one = the_url[0..15]
     part_two = the_url[16..-1]
-    part_one + ':3000' + part_two
+    part_one + part_two
   end
 
   def matches

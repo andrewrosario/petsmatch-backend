@@ -18,6 +18,6 @@ class PetSerializer < ActiveModel::Serializer
     part_two = the_url[16..-1]
     puts part_one
     puts part_two
-    part_one + ':3000' + part_two
+    part_one + part_two
   end
 end
