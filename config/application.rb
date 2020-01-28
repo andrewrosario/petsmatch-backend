@@ -12,7 +12,7 @@ require "action_mailbox/engine"
 require "action_text/engine"
 require "action_view/railtie"
 require "action_cable/engine"
-# require "sprockets/railtie"
+require "sprockets/railtie"
 # require "rails/test_unit/railtie"
 
 # Require the gems listed in Gemfile, including any gems
@@ -32,7 +32,7 @@ module PetsmatchBackend
       /Users/andrewrosario/.rvm/gems/ruby-2.6.5/gems/knock-2.1.1/lib/generators/knock/
       /Users/andrewrosario/.rvm/gems/ruby-2.6.5/gems/knock-2.1.1/lib/knock/
     )
-    
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
@@ -42,5 +42,6 @@ module PetsmatchBackend
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+    config.middleware.use Rack::MethodOverride
   end
 end

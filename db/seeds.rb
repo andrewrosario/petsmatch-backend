@@ -34,8 +34,8 @@ end
         gender: gender,
         bio: Faker::GreekPhilosophers.quote,
         email: Faker::Internet.unique.email,
-        password: 'password',
-        password_confirmation: 'password',
+        #password: 'password',
+        #password_confirmation: 'password',
         zipcode: 78701
     )
     number = rand(1..99)
@@ -49,7 +49,7 @@ end
             io: image_fetcher(number, 'women'),
             filename: "#{number}.jpg"
         })
-    else 
+    else
         this_user.image.attach({
             io: image_fetcher(number, 'women'),
             filename: "#{number}.jpg"

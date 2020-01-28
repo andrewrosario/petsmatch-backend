@@ -19,19 +19,19 @@ gem 'jwt'
 gem 'rest-client'
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
-gem 'faker'
 gem 'active_model_serializers'
+gem 'aws-sdk-s3', require: false
+gem 'faker'
 gem 'ngrok-tunnel'
-gem "aws-sdk-s3", require: false
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
-gem "rack-cors", ">= 1.0.4"
+gem 'rack-cors', '>= 1.0.4'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'byebug', platforms: %i[mri mingw x64_mingw]
 end
 
 group :development do
@@ -42,4 +42,15 @@ group :development do
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
+
+gem 'graphiql-rails'
+gem 'graphql', '~> 1.9'
+gem 'rubocop', require: false
+gem 'sass-rails'
+gem 'uglifier'
+gem 'coffee-rails'
+
+source 'https://rubygems.pkg.github.com/rigup' do
+  gem 'rigup_ql', '0.2.8'
+end
